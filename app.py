@@ -3,9 +3,6 @@ from models import query_request, nicknames
 from flask import request, jsonify, redirect
 
 
-dData = {}
-lData = []
-
 #creamos index
 @app.route('/')
 def index(name=''):
@@ -15,6 +12,9 @@ def index(name=''):
 #usuarios
 @app.route('/users')
 def users():
+    # Reseteamos directorios
+    dData = {}
+    lData = []
     data = query_request("SELECT * FROM plan_users LIMIT 0,100", "GET")
     for registro in data:
         dData = {"id":registro[0],"uuid":registro[1],"name":registro[3]}
@@ -24,6 +24,9 @@ def users():
 
 @app.route('/users/<string:user>')
 def single_users(user):
+    # Reseteamos directorio
+    dData = {}
+    lData = []
     if user == '':
         return redirect('index')
     data = query_request("SELECT * FROM plan_users WHERE name='%s'" % (user), "GET")
